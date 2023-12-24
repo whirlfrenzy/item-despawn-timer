@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "item-despawn-timer",
+	"version": "${version}",
+	"name": "Item Despawn Timer",
+	"description": "Informs you about the remainder of an item's lifespan",
+	"authors": [
+		"whirlfrenzy"
+	],
+	"contact": {
+		"sources": "https://github.com/whirlfrenzy/item-despawn-timer",
+		"issues": "https://github.com/whirlfrenzy/item-despawn-timer/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/item-despawn-timer/clock.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer"
+		],
+		"client":
+		[
+			"me.whirlfrenzy.itemdespawntimer.ItemDespawnTimerClient"
+		]
+	},
+	"mixins": [
+		"item-despawn-timer.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.3",
+		"minecraft": "~1.19.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
