@@ -10,8 +10,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Matrix4f;
+//import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,7 +33,8 @@ public abstract class ItemEntityRendererMixin {
         matrixStack.scale(-0.025f,-0.025f, 0.025f);
 
         Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-        matrix4f.addToLastColumn(new Vec3f((float) 4 / 80, 0.0F, 0.0F));
+//matrix4f.co
+        matrix4f.translate(new Vector3f(4.0F, 0.0F, 0.0F));
 
         TextRenderer textRenderer = ((EntityRendererAccessor)this).getTextRenderer();
         Text text = Text.literal(((int)Math.ceil(((float) 6000 - (float) itemEntity.getItemAge()) / 20)) + "s");
@@ -46,8 +48,9 @@ public abstract class ItemEntityRendererMixin {
 
 
         // Timer icon
-        float timerIconOffset = (float) -textRenderer.getWidth(text) / 80 - 0.25F;
-        matrix4f.addToLastColumn(new Vec3f(timerIconOffset, 0.0F, 0.0F));
+        float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
+        matrix4f.translate(new Vector3f(timerIconOffset, 0.0F, 0.0F));
+        //matrix4f.translate(new Vector3f(0.0F, 0.0F, -0.03F));
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
@@ -58,7 +61,7 @@ public abstract class ItemEntityRendererMixin {
         buffer.vertex(matrix4f, 7,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(1.0F, 1.0F).next();
         buffer.vertex(matrix4f, 7,0,0).color(1.0F,1.0F,0F,1.0F).texture(1.0F, 0.0F).next();
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, new Identifier("item-despawn-timer", "clock.png"));
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
