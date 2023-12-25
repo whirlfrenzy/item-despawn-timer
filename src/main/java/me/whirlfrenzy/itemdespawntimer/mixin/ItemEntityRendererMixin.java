@@ -43,8 +43,8 @@ public abstract class ItemEntityRendererMixin {
         float textBackgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f);
         int j = (int)(textBackgroundOpacity * 255.0f) << 24;
 
-        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, false, j, i);
-        textRenderer.draw(text, negativeHalfOfTextWidth, 0, -1, false, matrix4f, vertexConsumerProvider, false, 0, i);
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, j, i);
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
 
 
         // Timer icon
