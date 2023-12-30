@@ -1,6 +1,6 @@
 package me.whirlfrenzy.itemdespawntimer.networking;
 
-import me.whirlfrenzy.itemdespawntimer.mixin.ItemEntityAccessor;
+import me.whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -38,7 +38,7 @@ public class SetItemAgeInstance {
             PacketReceiver.addSetRetry(this);
             currentAttempt++;
         } else if(itemEntity instanceof ItemEntity){
-            ((ItemEntityAccessor)itemEntity).setItemAge(this.itemAge);
+            ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$setModItemAge(this.itemAge);
         }
     }
 

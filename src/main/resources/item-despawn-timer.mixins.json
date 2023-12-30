@@ -3,7 +3,6 @@
   "package": "me.whirlfrenzy.itemdespawntimer.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ItemEntityAccessor",
     "ItemEntityMixin",
     "EntityMixin"
   ],
