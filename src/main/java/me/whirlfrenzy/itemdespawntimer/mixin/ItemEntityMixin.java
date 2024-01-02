@@ -3,13 +3,15 @@ package me.whirlfrenzy.itemdespawntimer.mixin;
 import me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import me.whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import me.whirlfrenzy.itemdespawntimer.networking.PacketReceiver;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+//import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+//import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import me.whirlfrenzy.itemdespawntimer.networking.SetItemAgeInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -61,10 +63,7 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
 
     @Unique
     public void item_despawn_timer$sendItemAgePacket(ServerPlayerEntity player){
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(((Entity)(Object)(this)).getId());
-        buf.writeInt(this.getItemAge());
-        ServerPlayNetworking.send(player, PacketReceiver.ITEM_AGE_PACKET_IDENTIIER, buf);
+        PacketReceiver.simpleChannelInstance.send(PacketDistributor.PLAYER.with(() -> player), new SetItemAgeInstance((ItemEntity) (Object)this));
     }
 
     @Override

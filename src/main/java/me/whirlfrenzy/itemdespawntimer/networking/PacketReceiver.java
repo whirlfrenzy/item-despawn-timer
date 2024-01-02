@@ -1,15 +1,20 @@
 package me.whirlfrenzy.itemdespawntimer.networking;
 
 import me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+//import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+//import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.ArrayList;
 
 public class PacketReceiver {
-
-    public static Identifier ITEM_AGE_PACKET_IDENTIIER = new Identifier("item-despawn-timer", "item-age");
+    public static Identifier NETWORK_CHANNEL = new Identifier("item-despawn-timer", "network_channel");
+    private static final String PROTOCOL_VERSION = "1";
+    public static final SimpleChannel simpleChannelInstance = NetworkRegistry.newSimpleChannel(NETWORK_CHANNEL, () -> PROTOCOL_VERSION, (protocol) -> true, (protocol) -> true);
 
     public static ArrayList<SetItemAgeInstance> retryInstances = new ArrayList<>();
 
@@ -19,20 +24,15 @@ public class PacketReceiver {
     }
 
     public static void initialize(){
-        ClientPlayNetworking.registerGlobalReceiver(ITEM_AGE_PACKET_IDENTIIER, (client, handler, buf, responseSender) -> {
-            SetItemAgeInstance setItemAgeInstance = new SetItemAgeInstance(buf);
-
-            client.execute(setItemAgeInstance::attemptSet);
-        });
-
-        ClientTickEvents.END_WORLD_TICK.register((world) ->{
-            ArrayList<SetItemAgeInstance> copy = (ArrayList<SetItemAgeInstance>) retryInstances.clone();
-            retryInstances = new ArrayList<>();
-
-            for (SetItemAgeInstance setItemAgeInstance : copy) {
-                ItemDespawnTimer.LOGGER.info("Attempting to set item age again for ItemEntity id "+ setItemAgeInstance.getEntityId());
-                setItemAgeInstance.attemptSet();
-            }
+        simpleChannelInstance.registerMessage(1, SetItemAgeInstance.class, (setItemAgeInstance, packetByteBuf) -> {
+            packetByteBuf.writeInt(setItemAgeInstance.getEntityId());
+            packetByteBuf.writeInt(setItemAgeInstance.getItemAge());
+            ItemDespawnTimer.LOGGER.info("Writing packet byte finished");
+        }, SetItemAgeInstance::new, (setItemAgeInstance, contextSupplier) -> {
+            contextSupplier.get().enqueueWork(() -> {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> setItemAgeInstance::attemptSet);
+                ItemDespawnTimer.LOGGER.info("Enqueed client to run attemptSet");
+            });
         });
     }
 }

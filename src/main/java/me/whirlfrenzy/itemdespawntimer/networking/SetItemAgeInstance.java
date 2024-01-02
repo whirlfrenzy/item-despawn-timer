@@ -1,5 +1,6 @@
 package me.whirlfrenzy.itemdespawntimer.networking;
 
+import me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import me.whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
@@ -22,12 +23,15 @@ public class SetItemAgeInstance {
     public SetItemAgeInstance(PacketByteBuf buf){
         this.entityId = buf.readInt();
         this.itemAge = buf.readInt();
+        ItemDespawnTimer.LOGGER.info("SetItemAgeInstance from packet byte created");
     }
 
     public void attemptSet(){
         if(currentAttempt > 5){
             return;
         }
+
+        ItemDespawnTimer.LOGGER.info("Running attempt set");
 
         ClientWorld world = MinecraftClient.getInstance().world;
         if(world == null) return;
