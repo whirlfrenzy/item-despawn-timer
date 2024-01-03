@@ -27,12 +27,11 @@ public class PacketReceiver {
         simpleChannelInstance.registerMessage(1, SetItemAgeInstance.class, (setItemAgeInstance, packetByteBuf) -> {
             packetByteBuf.writeInt(setItemAgeInstance.getEntityId());
             packetByteBuf.writeInt(setItemAgeInstance.getItemAge());
-            ItemDespawnTimer.LOGGER.info("Writing packet byte finished");
         }, SetItemAgeInstance::new, (setItemAgeInstance, contextSupplier) -> {
             contextSupplier.get().enqueueWork(() -> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> setItemAgeInstance::attemptSet);
-                ItemDespawnTimer.LOGGER.info("Enqueed client to run attemptSet");
             });
+            contextSupplier.get().setPacketHandled(true);
         });
     }
 }
