@@ -42,8 +42,7 @@ displayTest="IGNORE_ALL_VERSION" # MATCH_VERSION is the default if nothing is sp
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Informs you about the remainder of an item's lifespan
-'''
+Informs you about the remainder of an item's lifespan'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.item_despawn_timer]] #optional
     # the modid of the dependency
