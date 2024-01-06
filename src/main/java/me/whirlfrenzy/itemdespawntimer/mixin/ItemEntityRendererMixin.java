@@ -11,7 +11,6 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
-//import net.minecraft.util.math.Vec3f;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,11 +32,10 @@ public abstract class ItemEntityRendererMixin {
         matrixStack.scale(-0.025f,-0.025f, 0.025f);
 
         Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-//matrix4f.co
         matrix4f.translate(new Vector3f(4.0F, 0.0F, 0.0F));
 
         TextRenderer textRenderer = ((EntityRendererAccessor)this).getTextRenderer();
-        Text text = Text.literal(((int)Math.ceil(((float) 6000 - (float) itemEntity.getItemAge()) / 20)) + "s");
+        Text text = Text.literal((Math.max(0, (int)Math.ceil(((float) 6000 - (float) itemEntity.getItemAge()) / 20))) + "s");
 
         float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(text) / 2;
         float textBackgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f);
@@ -50,7 +48,6 @@ public abstract class ItemEntityRendererMixin {
         // Timer icon
         float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
         matrix4f.translate(new Vector3f(timerIconOffset, 0.0F, 0.0F));
-        //matrix4f.translate(new Vector3f(0.0F, 0.0F, -0.03F));
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
