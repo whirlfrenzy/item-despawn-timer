@@ -4,10 +4,10 @@ import me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 //import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.DistExecutor;
+import net.neoforged.neoforge.network.NetworkRegistry;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
 
 import java.util.ArrayList;
 
@@ -28,10 +28,10 @@ public class PacketReceiver {
             packetByteBuf.writeInt(setItemAgeInstance.getEntityId());
             packetByteBuf.writeInt(setItemAgeInstance.getItemAge());
         }, SetItemAgeInstance::new, (setItemAgeInstance, contextSupplier) -> {
-            contextSupplier.get().enqueueWork(() -> {
+            contextSupplier.enqueueWork(() -> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> setItemAgeInstance::attemptSet);
             });
-            contextSupplier.get().setPacketHandled(true);
+            contextSupplier.setPacketHandled(true);
         });
     }
 }

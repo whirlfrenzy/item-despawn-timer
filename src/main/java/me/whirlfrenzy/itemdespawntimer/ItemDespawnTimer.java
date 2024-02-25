@@ -1,9 +1,7 @@
 package me.whirlfrenzy.itemdespawntimer;
 
 import me.whirlfrenzy.itemdespawntimer.networking.PacketReceiver;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.common.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +14,6 @@ public class ItemDespawnTimer {
 	public static final String MOD_ID = "item_despawn_timer";
 
 	public ItemDespawnTimer(){
-		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-
 		PacketReceiver.initialize();
 	}
 }
