@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class PacketReceiver {
 
-    public static Identifier ITEM_AGE_PACKET_IDENTIIER = new Identifier("item-despawn-timer", "item-age");
+    public static Identifier ITEM_AGE_PACKET_IDENTIFIER = new Identifier("item-despawn-timer", "item-age");
 
     public static ArrayList<SetItemAgeInstance> retryInstances = new ArrayList<>();
 
@@ -19,7 +19,7 @@ public class PacketReceiver {
     }
 
     public static void initialize(){
-        ClientPlayNetworking.registerGlobalReceiver(ITEM_AGE_PACKET_IDENTIIER, (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(ITEM_AGE_PACKET_IDENTIFIER, (client, handler, buf, responseSender) -> {
             SetItemAgeInstance setItemAgeInstance = new SetItemAgeInstance(buf);
 
             client.execute(setItemAgeInstance::attemptSet);
