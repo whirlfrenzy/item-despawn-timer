@@ -14,7 +14,7 @@ base {
     archivesName = "item-despawn-timer-forge"
 }
 
-version = "0.1.1-1.20.1-forge"
+version = "0.1.2-1.20.1-forge"
 group = "me.whirlfrenzy.item-despawn-timer"
 
 repositories {
