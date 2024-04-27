@@ -1,6 +1,6 @@
 # Item Despawn Timer
-![Modrinth Downloads](https://img.shields.io/modrinth/dt/item-despawn-timer?style=flat&logo=modrinth&label=Modrinth%20Downloads&link=https%3A%2F%2Fmodrinth.com%2Fmod%2Fitem-despawn-timer)
-![CurseForge Downloads](https://img.shields.io/curseforge/dt/954014?logo=curseforge&label=CurseForge%20Downloads&link=https%3A%2F%2Fwww.curseforge.com%2Fminecraft%2Fmc-mods%2Fitem-despawn-timer)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/item-despawn-timer?style=flat&logo=modrinth&label=Modrinth%20Downloads&link=https%3A%2F%2Fmodrinth.com%2Fmod%2Fitem-despawn-timer)](https://modrinth.com/mod/item-despawn-timer)
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/954014?logo=curseforge&label=CurseForge%20Downloads&link=https%3A%2F%2Fwww.curseforge.com%2Fminecraft%2Fmc-mods%2Fitem-despawn-timer)](https://www.curseforge.com/minecraft/mc-mods/item-despawn-timer)
 
 ![A few items on the ground with the mod's timer above them.](https://cdn.modrinth.com/data/6PB3ZJCO/images/b0584117b22df6400dca933434808083494b79ef.png)
 
