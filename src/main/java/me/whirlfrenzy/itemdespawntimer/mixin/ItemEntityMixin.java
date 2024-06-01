@@ -1,16 +1,9 @@
 package me.whirlfrenzy.itemdespawntimer.mixin;
 
-import me.whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import me.whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
-import me.whirlfrenzy.itemdespawntimer.networking.PacketReceiver;
 import me.whirlfrenzy.itemdespawntimer.networking.SetItemAgePacket;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
