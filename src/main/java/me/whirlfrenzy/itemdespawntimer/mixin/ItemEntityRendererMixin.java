@@ -10,8 +10,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,7 +32,7 @@ public abstract class ItemEntityRendererMixin {
         matrixStack.scale(-0.025f,-0.025f, 0.025f);
 
         Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-        matrix4f.translate(new Vector3f(4.0F, 0.0F, 0.0F));
+        matrix4f.addToLastColumn(new Vec3f((float) 4 / 80, 0.0F, 0.0F));
 
         TextRenderer textRenderer = ((EntityRendererAccessor)this).getTextRenderer();
         Text text;
@@ -49,13 +49,13 @@ public abstract class ItemEntityRendererMixin {
         float textBackgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f);
         int j = (int)(textBackgroundOpacity * 255.0f) << 24;
 
-        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, j, i);
-        textRenderer.draw(text, negativeHalfOfTextWidth, 0, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, false, j, i);
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, -1, false, matrix4f, vertexConsumerProvider, false, 0, i);
 
 
         // Timer icon
-        float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
-        matrix4f.translate(new Vector3f(timerIconOffset, 0.0F, 0.0F));
+        float timerIconOffset = (float) -textRenderer.getWidth(text) / 80 - 0.25F;
+        matrix4f.addToLastColumn(new Vec3f(timerIconOffset, 0.0F, 0.0F));
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
@@ -66,7 +66,7 @@ public abstract class ItemEntityRendererMixin {
         buffer.vertex(matrix4f, 7,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(1.0F, 1.0F).next();
         buffer.vertex(matrix4f, 7,0,0).color(1.0F,1.0F,0F,1.0F).texture(1.0F, 0.0F).next();
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, new Identifier("item-despawn-timer", "clock.png"));
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
