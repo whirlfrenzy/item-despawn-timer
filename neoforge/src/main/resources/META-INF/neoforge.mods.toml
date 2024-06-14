@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/whirlfrenzy/item-despawn-timer/issues"
+license = "MIT"
+
+[[mods]]
+modId = "item_despawn_timer"
+version = "${version}"
+displayName = "Item Despawn Timer"
+authors = "whirlfrenzy"
+description = '''
+Informs you about the remainder of an item's lifespan
+'''
+#logoFile = ""
+
+[[dependencies.item_despawn_timer]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.item_despawn_timer]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "item-despawn-timer.mixins.json"

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "whirlfrenzy.itemdespawntimer.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "EntityMixin",
+    "EntityRendererAccessor",
+    "ItemEntityMixin",
+    "ItemEntityRendererMixin",
+    "ItemPickupParticleAccessor",
+    "ItemPickupParticleMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

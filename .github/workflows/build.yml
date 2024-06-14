@@ -1,8 +1,3 @@
-# Automatically build the project and run any configured tests for every push
-# and submitted pull request. This can help catch issues that only occur on
-# certain platforms or Java versions, and provides a first line of defence
-# against bad commits.
-
 name: build
 on: [pull_request, push]
 
@@ -10,12 +5,10 @@ jobs:
   build:
     strategy:
       matrix:
-        # Use these Java versions
         java: [
-          21,    # Current Java LTS
+          21,
         ]
-        # and run on both Linux and Windows
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repository
@@ -32,9 +25,18 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
-      - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
+      - name: capture build artifacts (common)
         uses: actions/upload-artifact@v3
         with:
-          name: Artifacts
+          name: Artifacts (Common)
           path: build/libs/
+      - name: capture build artifacts (fabric)
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts (Fabric)
+          path: fabric/build/libs/
+      - name: capture build artifacts (neoforge)
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts (NeoForge)
+          path: neoforge/build/libs/
