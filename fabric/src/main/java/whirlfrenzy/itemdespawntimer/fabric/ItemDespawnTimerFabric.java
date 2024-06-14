@@ -10,7 +10,5 @@ public final class ItemDespawnTimerFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerNetworkingFabric.initialize();
-
-        ClientTickEvents.END_WORLD_TICK.register((world -> ClientNetworking.performQueuedSetInstances()));
     }
 }
