@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts (Common)
-          path: build/libs/
+          path: common/build/libs/
       - name: capture build artifacts (fabric)
         uses: actions/upload-artifact@v3
         with:
