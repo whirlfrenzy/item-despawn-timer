@@ -6,6 +6,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class PlatformSpecificHelperImpl {
     public static void sendPacketToPlayer(ServerPlayerEntity player, CustomPayload packet){
-        ServerPlayNetworking.send(player, packet);
+        if(ServerPlayNetworking.canSend(player, packet.getId())) {
+            ServerPlayNetworking.send(player, packet);
+        }
     }
 }

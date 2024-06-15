@@ -22,7 +22,7 @@ public final class ItemDespawnTimerNeoForge {
 
     @SubscribeEvent
     public void registerPayloadHandlers(final RegisterPayloadHandlersEvent event){
-        final PayloadRegistrar registrar = event.registrar("1");
+        final PayloadRegistrar registrar = event.registrar("1").optional();
 
         registrar.playToClient(SetItemAgePacket.PACKET_ID, SetItemAgePacket.PACKET_CODEC, (packet, context) -> {
             context.enqueueWork(() -> {
