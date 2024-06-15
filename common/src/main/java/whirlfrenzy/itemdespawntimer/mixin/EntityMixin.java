@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-    @Shadow public abstract World getWorld();
-
     // Needed to get the onStartedTrackingBy mixin in ItemEntityMixin to work outside the dev environment
     // + ItemEntity doesn't override the onStartedTrackingBy method
     @Inject(method = "onStartedTrackingBy", at = @At("HEAD"))

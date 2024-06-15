@@ -4,14 +4,14 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "EntityMixin",
     "EntityRendererAccessor",
-    "ItemEntityMixin",
     "ItemEntityRendererMixin",
     "ItemPickupParticleAccessor",
     "ItemPickupParticleMixin"
   ],
   "mixins": [
+    "EntityMixin",
+    "ItemEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

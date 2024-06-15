@@ -85,7 +85,7 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        if(!this.getWorld().isClient()) {
+        if(!((ItemEntity)(Object)this).getWorld().isClient()) {
             if (item_despawn_timer$previousTickItemAge != (this.getItemAge() - 1) && item_despawn_timer$previousTickItemAge != -32768){
                 item_despawn_timer$sendItemAgePacketToNearbyPlayers();
             }
