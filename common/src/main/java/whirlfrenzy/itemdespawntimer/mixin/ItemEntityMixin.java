@@ -1,8 +1,6 @@
 package whirlfrenzy.itemdespawntimer.mixin;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.PlatformSpecificHelper;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.entity.ItemEntity;
@@ -14,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import whirlfrenzy.itemdespawntimer.networking.SetItemAgePacket;
+import whirlfrenzy.itemdespawntimer.networking.SetItemLifespanPacket;
 
 import java.util.ArrayList;
 
@@ -37,6 +36,12 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
     // This is only used on the client by the way, the server will send packets to the client to update this field if necessary
     @Unique
     int item_despawn_timer$modItemAge = 0;
+
+
+    // Server uses it to check if the item lifespan (or I guess despawn duration, just using NeoForge terminology here) was extended via NeoForge's item lifespan extending functionality
+    @Unique
+    int item_despawn_timer$modItemLifespan = 6000;
+
     @Unique
     ArrayList<ServerPlayerEntity> item_despawn_timer$playersInRange = new ArrayList<>();
 
@@ -46,19 +51,29 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
     }
 
     @Override
-    public void item_despawn_timer$setTimerLabelVisibility(boolean newTimerLabelVisibility) {
-        this.item_despawn_timer$timerLabelVisibility = newTimerLabelVisibility;
+    public void item_despawn_timer$setTimerLabelVisibility(boolean visible) {
+        this.item_despawn_timer$timerLabelVisibility = visible;
     }
 
     @Override
     public int item_despawn_timer$getModItemAge(){
         return this.item_despawn_timer$modItemAge;
-    };
+    }
 
     @Override
-    public void item_despawn_timer$setModItemAge(int modItemAge){
-        this.item_despawn_timer$modItemAge = modItemAge;
-    };
+    public void item_despawn_timer$setModItemAge(int itemAge){
+        this.item_despawn_timer$modItemAge = itemAge;
+    }
+
+    @Override
+    public int item_despawn_timer$getModItemLifespan(){
+        return this.item_despawn_timer$modItemLifespan;
+    }
+
+    @Override
+    public void item_despawn_timer$setModItemLifespan(int itemLifespan){
+        this.item_despawn_timer$modItemLifespan = itemLifespan;
+    }
 
     @Override
     public void item_despawn_timer$sendItemAgePacket(ServerPlayerEntity player){
@@ -73,8 +88,25 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
     }
 
     @Override
+    public void item_despawn_timer$sendItemLifespanPacket(ServerPlayerEntity player){
+        PlatformSpecificHelper.sendPacketToPlayer(player, new SetItemLifespanPacket(((ItemEntity)(Object)this).getId(), this.item_despawn_timer$modItemLifespan, 0));
+    }
+
+    @Override
+    public void item_despawn_timer$sendItemLifespanPacketToNearbyPlayers(){
+        for(ServerPlayerEntity player : item_despawn_timer$playersInRange){
+            item_despawn_timer$sendItemLifespanPacket(player);
+        }
+    }
+
+    @Override
     public void onStartedTrackingBy(ServerPlayerEntity player, CallbackInfo ci) {
         item_despawn_timer$sendItemAgePacket(player);
+
+        if(item_despawn_timer$modItemLifespan != 6000){
+            item_despawn_timer$sendItemLifespanPacket(player);
+        }
+
         item_despawn_timer$playersInRange.add(player);
     }
 

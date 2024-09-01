@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "whirlfrenzy.itemdespawntimer.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+
+  ],
+  "mixins": [
+    "NeoForgeItemEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -12,6 +12,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.networking.ClientNetworking;
 import whirlfrenzy.itemdespawntimer.networking.SetItemAgePacket;
+import whirlfrenzy.itemdespawntimer.networking.SetItemLifespanPacket;
 
 @Mod(ItemDespawnTimer.NEOFORGE_MOD_ID)
 public final class ItemDespawnTimerNeoForge {
@@ -26,7 +27,13 @@ public final class ItemDespawnTimerNeoForge {
 
         registrar.playToClient(SetItemAgePacket.PACKET_ID, SetItemAgePacket.PACKET_CODEC, (packet, context) -> {
             context.enqueueWork(() -> {
-                ClientNetworking.addSetItemAgeInstance(packet);
+                ClientNetworking.addItemDataPacket(packet);
+            });
+        });
+
+        registrar.playToClient(SetItemLifespanPacket.PACKET_ID, SetItemLifespanPacket.PACKET_CODEC, (packet, context) -> {
+            context.enqueueWork(() -> {
+                ClientNetworking.addItemDataPacket(packet);
             });
         });
     }
