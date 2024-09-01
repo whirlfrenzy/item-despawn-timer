@@ -16,7 +16,7 @@ Informs you about the remainder of an item's lifespan
 [[dependencies.item_despawn_timer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0,)"
+versionRange = "[21.0.143,)"
 ordering = "NONE"
 side = "CLIENT"
 
@@ -29,3 +29,6 @@ side = "BOTH"
 
 [[mixins]]
 config = "item-despawn-timer.mixins.json"
+
+[[mixins]]
+config = "item-despawn-timer.neoforge.mixins.json"
