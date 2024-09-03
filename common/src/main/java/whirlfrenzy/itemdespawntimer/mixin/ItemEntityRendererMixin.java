@@ -12,19 +12,19 @@ import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import whirlfrenzy.itemdespawntimer.config.ItemDespawnTimerClientConfig;
 
 @Mixin(ItemEntityRenderer.class)
 public abstract class ItemEntityRendererMixin {
     @Inject(at = @At(value = "TAIL"), method = "render(Lnet/minecraft/entity/ItemEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     public void renderTimerText(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-        if(!((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getTimerLabelVisibility()){
+        if(!((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getTimerLabelVisibility() || !ItemDespawnTimerClientConfig.timerVisible){
             return;
         }
 
@@ -36,7 +36,7 @@ public abstract class ItemEntityRendererMixin {
         // The remaining seconds label
         // TODO: Investigate ItemEntity as well as other transparency effects not rendering behind the label
         matrixStack.push();
-        matrixStack.translate(labelPosition.getX(), labelPosition.getY() + 0.75f, labelPosition.getZ());
+        matrixStack.translate(labelPosition.getX(), labelPosition.getY() + ItemDespawnTimerClientConfig.timerLabelHeight, labelPosition.getZ());
         matrixStack.multiply(((EntityRendererAccessor)this).getDispatcher().getRotation());
         matrixStack.scale(0.025f,-0.025f, 0.025f);
 

@@ -20,6 +20,9 @@
     ],
     "client": [
       "whirlfrenzy.itemdespawntimer.fabric.client.ItemDespawnTimerFabricClient"
+    ],
+    "modmenu": [
+      "whirlfrenzy.itemdespawntimer.fabric.client.ModMenuApiImpl"
     ]
   },
   "mixins": [
@@ -29,5 +32,8 @@
     "fabricloader": ">=0.15.11",
     "minecraft": ">=1.21",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }

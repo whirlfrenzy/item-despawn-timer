@@ -32,6 +32,8 @@ dependencies {
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+
+    modImplementation "maven.modrinth:modmenu:11.0.2"
 }
 
 processResources {
