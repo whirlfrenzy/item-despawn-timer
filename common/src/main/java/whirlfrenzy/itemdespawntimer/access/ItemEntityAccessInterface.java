@@ -3,9 +3,9 @@ package whirlfrenzy.itemdespawntimer.access;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public interface ItemEntityAccessInterface {
-    boolean item_despawn_timer$getTimerLabelVisibility();
+    boolean item_despawn_timer$getLabelVisibility();
 
-    void item_despawn_timer$setTimerLabelVisibility(boolean visible);
+    void item_despawn_timer$setLabelVisibility(boolean visible);
 
     int item_despawn_timer$getModItemAge();
 
