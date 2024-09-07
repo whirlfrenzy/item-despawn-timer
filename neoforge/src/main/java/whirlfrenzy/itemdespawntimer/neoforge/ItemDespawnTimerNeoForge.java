@@ -1,10 +1,14 @@
 package whirlfrenzy.itemdespawntimer.neoforge;
 
 import net.minecraft.server.world.ServerWorld;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -19,6 +23,11 @@ import whirlfrenzy.itemdespawntimer.networking.SetItemLifespanPacket;
 public final class ItemDespawnTimerNeoForge {
     public ItemDespawnTimerNeoForge(IEventBus eventBus) {
         eventBus.register(this);
+
+        if(FMLLoader.getDist() == Dist.CLIENT){
+            ItemDespawnTimerClientConfig.init(ItemDespawnTimer.MOD_ID, ItemDespawnTimerClientConfig.class);
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (client, parent) -> ItemDespawnTimerClientConfig.getScreen(parent, ItemDespawnTimer.MOD_ID));
+        }
     }
 
     @SubscribeEvent
