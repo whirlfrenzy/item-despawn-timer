@@ -46,12 +46,12 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
     ArrayList<ServerPlayerEntity> item_despawn_timer$playersInRange = new ArrayList<>();
 
     @Override
-    public boolean item_despawn_timer$getTimerLabelVisibility() {
+    public boolean item_despawn_timer$getLabelVisibility() {
         return this.item_despawn_timer$timerLabelVisibility;
     }
 
     @Override
-    public void item_despawn_timer$setTimerLabelVisibility(boolean visible) {
+    public void item_despawn_timer$setLabelVisibility(boolean visible) {
         this.item_despawn_timer$timerLabelVisibility = visible;
     }
 

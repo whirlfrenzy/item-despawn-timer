@@ -18,7 +18,7 @@ public class ItemPickupParticleMixin {
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/render/entity/EntityRenderDispatcher;Lnet/minecraft/client/render/BufferBuilderStorage;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)V")
     public void disableLabelRendering(EntityRenderDispatcher dispatcher, BufferBuilderStorage bufferStorage, ClientWorld world, Entity itemEntity, Entity interactingEntity, Vec3d velocity, CallbackInfo ci){
         if(itemEntity instanceof ItemEntity) {
-            ((ItemEntityAccessInterface) ((ItemPickupParticleAccessor) this).getItemEntity()).item_despawn_timer$setTimerLabelVisibility(false);
+            ((ItemEntityAccessInterface) ((ItemPickupParticleAccessor) this).getItemEntity()).item_despawn_timer$setLabelVisibility(false);
         }
     }
 }
