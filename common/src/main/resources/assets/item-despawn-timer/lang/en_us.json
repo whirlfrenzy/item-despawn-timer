@@ -1,0 +1,11 @@
+{
+  "item-despawn-timer.midnightconfig.title": "Item Despawn Timer Config",
+  "item-despawn-timer.midnightconfig.timerVisible": "Show timer label",
+  "item-despawn-timer.midnightconfig.timerLabelHeight": "Timer label height",
+  "item-despawn-timer.midnightconfig.nameVisible": "Show item name label",
+  "item-despawn-timer.midnightconfig.nameLabelHeight": "Item name label height",
+
+  "key.item-despawn-timer.category": "Item Despawn Timer",
+  "key.item-despawn-timer.toggle_timer_visibility": "Toggle Timer Label",
+  "key.item-despawn-timer.toggle_name_visibility": "Toggle Item Name Label"
+}
