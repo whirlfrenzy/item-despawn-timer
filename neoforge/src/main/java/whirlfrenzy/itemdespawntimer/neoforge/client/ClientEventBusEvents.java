@@ -24,6 +24,11 @@ public class ClientEventBusEvents {
                 ItemDespawnTimerClientConfig.timerVisible = !ItemDespawnTimerClientConfig.timerVisible;
                 ItemDespawnTimerClientConfig.write(ItemDespawnTimer.MOD_ID);
             }
+
+            while(ItemDespawnTimerKeybinds.TOGGLE_NAME_VISIBILITY.wasPressed()){
+                ItemDespawnTimerClientConfig.nameVisible = !ItemDespawnTimerClientConfig.nameVisible;
+                ItemDespawnTimerClientConfig.write(ItemDespawnTimer.MOD_ID);
+            }
         }
     }
 }

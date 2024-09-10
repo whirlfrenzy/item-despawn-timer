@@ -5,6 +5,7 @@ import net.minecraft.client.util.InputUtil;
 
 public class ItemDespawnTimerKeybinds {
     public static KeyBinding TOGGLE_TIMER_VISIBILITY = new KeyBinding("key.item-despawn-timer.toggle_timer_visibility", InputUtil.GLFW_KEY_F6, "key.item-despawn-timer.category");
+    public static KeyBinding TOGGLE_NAME_VISIBILITY = new KeyBinding("key.item-despawn-timer.toggle_name_visibility", InputUtil.GLFW_KEY_F7, "key.item-despawn-timer.category");
 
     public static void initialize(){}
 }

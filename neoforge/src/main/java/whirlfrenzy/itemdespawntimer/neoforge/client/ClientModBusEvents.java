@@ -12,5 +12,6 @@ public class ClientModBusEvents {
     public static void registerKeybinds(RegisterKeyMappingsEvent event){
         ItemDespawnTimerKeybinds.initialize();
         event.register(ItemDespawnTimerKeybinds.TOGGLE_TIMER_VISIBILITY);
+        event.register(ItemDespawnTimerKeybinds.TOGGLE_NAME_VISIBILITY);
     }
 }
