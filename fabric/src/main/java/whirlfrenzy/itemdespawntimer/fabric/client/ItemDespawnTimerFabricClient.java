@@ -22,10 +22,16 @@ public final class ItemDespawnTimerFabricClient implements ClientModInitializer 
         ItemDespawnTimer.initialize();
 
         KeyBindingHelper.registerKeyBinding(ItemDespawnTimerKeybinds.TOGGLE_TIMER_VISIBILITY);
+        KeyBindingHelper.registerKeyBinding(ItemDespawnTimerKeybinds.TOGGLE_NAME_VISIBILITY);
 
         WorldRenderEvents.END.register(context -> {
             while(ItemDespawnTimerKeybinds.TOGGLE_TIMER_VISIBILITY.wasPressed()){
                 ItemDespawnTimerClientConfig.timerVisible = !ItemDespawnTimerClientConfig.timerVisible;
+                ItemDespawnTimerClientConfig.write(ItemDespawnTimer.MOD_ID);
+            }
+
+            while(ItemDespawnTimerKeybinds.TOGGLE_NAME_VISIBILITY.wasPressed()){
+                ItemDespawnTimerClientConfig.nameVisible = !ItemDespawnTimerClientConfig.nameVisible;
                 ItemDespawnTimerClientConfig.write(ItemDespawnTimer.MOD_ID);
             }
         });
