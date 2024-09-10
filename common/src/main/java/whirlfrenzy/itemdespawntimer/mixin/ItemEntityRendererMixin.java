@@ -94,7 +94,7 @@ public abstract class ItemEntityRendererMixin {
             matrixStack.scale(0.025f,-0.025f, 0.025f);
 
             Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-            matrix4f.translate(4.0F, 0F, 0F);
+            matrix4f.translate(0.0F, 0F, 0F);
 
             float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(itemEntity.getStack().getName()) / 2;
 
