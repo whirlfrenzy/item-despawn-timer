@@ -323,10 +323,15 @@ public abstract class MidnightConfig {
                             if (info.dataType.isEnum())
                                 values.setValue(value -> Text.translatable(translationPrefix + "enum." + info.field.getType().getSimpleName() + "." + info.value.toString()));
                             widget = ButtonWidget.builder(values.getValue().apply(info.value), values.getKey()).dimensions(width - 160, 0, 150, 20).tooltip(getTooltip(info)).build();
-                        }
-                        else if (e.isSlider())
+                        } else if (e.isSlider()) {
                             widget = new MidnightSliderWidget(width - 160, 0, 150, 20, Text.of(info.tempValue), (Double.parseDouble(info.tempValue) - e.min()) / (e.max() - e.min()), info);
-                        else widget = new TextFieldWidget(textRenderer, width - 160, 0, 150, 20, Text.empty());
+                        } else if(info.field.getType() == List.class){
+                            widget = new ButtonWidget.Builder(Text.translatable("item-despawn-timer.midnightconfig.openListEditor"), button -> {
+                                this.client.setScreen(new ListEditorScreen(this));
+                            }).dimensions(width - 160, 0, 150, 20).build();
+                        } else {
+                            widget = new TextFieldWidget(textRenderer, width - 160, 0, 150, 20, Text.empty());
+                        }
 
                         if (widget instanceof TextFieldWidget textField) {
                             textField.setMaxLength(info.width); textField.setText(info.tempValue);
@@ -336,7 +341,7 @@ public abstract class MidnightConfig {
                         widget.setTooltip(getTooltip(info));
 
                         ButtonWidget cycleButton = null;
-                        if (info.field.getType() == List.class) {
+                        /*if (info.field.getType() == List.class) {
                             cycleButton = ButtonWidget.builder(Text.literal(String.valueOf(info.listIndex)).formatted(Formatting.GOLD), (button -> {
                                 var values = (List<?>) info.value;
                                 values.remove("");
@@ -346,7 +351,7 @@ public abstract class MidnightConfig {
                                 if (info.listIndex == values.size()) info.tempValue = "";
                                 list.clear(); fillList();
                             })).dimensions(width - 160, 0, 20, 20).build();
-                        }
+                        }*/
                         if (e.isColor()) {
                             ButtonWidget colorButton = ButtonWidget.builder(Text.literal("⬛"),
                                     button -> new Thread(() -> {
@@ -378,7 +383,12 @@ public abstract class MidnightConfig {
                             explorerButton.setPosition(width - 160, 0);
                             info.actionButton = explorerButton;
                         }
-                        List<ClickableWidget> widgets = Lists.newArrayList(widget, resetButton);
+                        List<ClickableWidget> widgets;
+                        if(info.field.getType() == List.class){
+                            widgets = Lists.newArrayList(widget);
+                        } else {
+                            widgets = Lists.newArrayList(widget, resetButton);
+                        }
                         if (info.actionButton != null) {
                             widget.setWidth(widget.getWidth() - 22); widget.setX(widget.getX() + 22);
                             widgets.add(info.actionButton);
