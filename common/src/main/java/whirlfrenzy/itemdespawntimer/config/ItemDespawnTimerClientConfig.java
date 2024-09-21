@@ -16,7 +16,7 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
     public static boolean nameVisible = false;
 
     @Entry(min = -0.5, max = 5)
-    public static float nameLabelHeight = 1.25f;
+    public static float nameLabelHeight = 1.1f;
 
     @Entry
     public static boolean useWhitelist = false;
