@@ -2,6 +2,8 @@ package whirlfrenzy.itemdespawntimer.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.entity.EntityAttachmentType;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
@@ -25,6 +27,16 @@ public abstract class ItemEntityRendererMixin {
     @Inject(at = @At(value = "TAIL"), method = "render(Lnet/minecraft/entity/ItemEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     public void renderTextLabels(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if(!((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getLabelVisibility()) return;
+
+        // TODO: test this out
+        if(ItemDespawnTimerClientConfig.useWhitelist){
+            Identifier itemId = Registries.ITEM.getId(itemEntity.getStack().getItem());
+            if(ItemDespawnTimerClientConfig.whitelistIsBlacklist){
+                if(ItemDespawnTimerClientConfig.whitelistedItems.contains(itemId)) return;
+            } else {
+                if(!ItemDespawnTimerClientConfig.whitelistedItems.contains(itemId)) return;
+            }
+        }
 
         // TODO: Investigate ItemEntity as well as other transparency effects not rendering behind the label
 
