@@ -7,6 +7,16 @@
   "item-despawn-timer.midnightconfig.useWhitelist": "Use item whitelist",
   "item-despawn-timer.midnightconfig.whitelistIsBlacklist": "Use whitelist as blacklist",
   "item-despawn-timer.midnightconfig.whitelistedItems": "Whitelisted items",
+  "item-despawn-timer.midnightconfig.openListEditor": "Open List Editor",
+
+  "item-despawn-timer.midnightconfig.listEditor": "List Editor",
+  "item-despawn-timer.midnightconfig.itemId" : "Item ID",
+  "item-despawn-timer.midnightconfig.itemId.placeholder": "(e.g. minecraft:diamond)",
+  "item-despawn-timer.midnightconfig.invalidItem": "Invalid item",
+  "item-despawn-timer.midnightconfig.itemAlreadyPresent": "Item already added",
+  "item-despawn-timer.midnightconfig.add": "Add",
+  "item-despawn-timer.midnightconfig.itemMissing": "This item is not present in the game. The mod adding this item might've been removed.",
+  "item-despawn-timer.midnightconfig.remove": "Remove",
 
   "key.item-despawn-timer.category": "Item Despawn Timer",
   "key.item-despawn-timer.toggle_timer_visibility": "Toggle Timer Label",
