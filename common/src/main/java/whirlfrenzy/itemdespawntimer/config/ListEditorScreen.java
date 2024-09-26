@@ -34,13 +34,13 @@ public class ListEditorScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 10, -1);
-        context.drawTextWithShadow(this.textRenderer, Text.translatable("item-despawn-timer.midnightconfig.itemId"), this.width / 2 - 75, 24, -1);
+        context.drawTextWithShadow(this.textRenderer, Text.translatable("item-despawn-timer.midnightconfig.itemId"), this.width / 2 - 95, 24, -1);
     }
 
     @Override
     protected void init() {
         this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close()).dimensions(this.width / 2 - 75, this.height - 26, 150, 20).build());
-        this.itemIDField = new TextFieldWidget(this.textRenderer, this.width / 2 - 75, 35, 130, 20, Text.translatable("item-despawn-timer.midnightconfig.itemId"));
+        this.itemIDField = new TextFieldWidget(this.textRenderer, this.width / 2 - 95, 35, 165, 20, Text.translatable("item-despawn-timer.midnightconfig.itemId"));
         this.itemIDField.setTextPredicate(text -> {
             if(text.isEmpty()){
                 this.itemIDField.setEditableColor(-1);
@@ -75,7 +75,7 @@ public class ListEditorScreen extends Screen {
             ItemDespawnTimerClientConfig.whitelistedItems.addFirst(id);
             this.list.addToTop(id);
             this.itemIDField.setText("");
-        }).dimensions(this.width / 2 + 60, 35, 20, 20).tooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.add"))).build();
+        }).dimensions(this.width / 2 + 75, 35, 20, 20).tooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.add"))).build();
 
         this.list = new ItemList(this.client, this.width, this.height - 105, 65, 25);
 
@@ -134,21 +134,21 @@ public class ListEditorScreen extends Screen {
             this.parentList = parentList;
 
             if(!Registries.ITEM.containsId(this.identifier)){
-                this.itemName = new TextWidget(this.parentList.getWidth() / 2 - 50, 0, 115, 25, Text.literal(this.identifier.toString()), this.client.textRenderer);
+                this.itemName = new TextWidget(this.parentList.getWidth() / 2 - 70, 0, 135, 25, Text.literal(this.identifier.toString()), this.client.textRenderer);
                 this.itemName.alignLeft();
                 this.itemName.setTextColor(0x444444);
                 this.itemName.setTooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.itemMissing")));
             } else {
                 this.representingItem = new ItemStack(Registries.ITEM.get(identifier));
 
-                this.itemName = new TextWidget(this.parentList.getWidth() / 2 - 50, 0, 115, 25, Text.translatable(this.representingItem.getTranslationKey()), this.client.textRenderer);
+                this.itemName = new TextWidget(this.parentList.getWidth() / 2 - 70, 0, 135, 25, Text.translatable(this.representingItem.getTranslationKey()), this.client.textRenderer);
                 this.itemName.alignLeft();
             }
 
             this.removeButton = new ButtonWidget.Builder(Text.literal("-"), button -> {
                 ItemDespawnTimerClientConfig.whitelistedItems.remove(this.identifier);
                 this.parentList.remove(this);
-            }).dimensions(this.parentList.getWidth() / 2 + 60, 0, 20, 20).tooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.remove"))).build();
+            }).dimensions(this.parentList.getWidth() / 2 + 75, 0, 20, 20).tooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.remove"))).build();
         }
 
         @Override
@@ -169,7 +169,7 @@ public class ListEditorScreen extends Screen {
             }
 
             if(this.representingItem != null){
-                context.drawItem(this.representingItem, this.parentList.getWidth() / 2 - 75, y + 3);
+                context.drawItem(this.representingItem, this.parentList.getWidth() / 2 - 95, y + 3);
             }
         }
     }
