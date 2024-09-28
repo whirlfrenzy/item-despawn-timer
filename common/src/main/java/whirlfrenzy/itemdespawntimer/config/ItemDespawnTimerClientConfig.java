@@ -3,7 +3,9 @@ package whirlfrenzy.itemdespawntimer.config;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDespawnTimerClientConfig extends MidnightConfig {
     @Entry
@@ -26,4 +28,10 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
 
     @Entry
     public static List<Identifier> whitelistedItems = new ArrayList<>();
+
+    @Entry
+    public static boolean useTimeOverrides = false;
+
+    @Entry
+    public static Map<Identifier, Integer> timeOverrides = new LinkedHashMap<>();
 }
