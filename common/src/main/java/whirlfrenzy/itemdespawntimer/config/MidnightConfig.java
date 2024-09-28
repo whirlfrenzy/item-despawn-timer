@@ -14,6 +14,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.OrderedText; import net.minecraft.text.Style; import net.minecraft.text.Text;
 import net.minecraft.util.Formatting; import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.PlatformSpecificHelper;
 
 import javax.swing.*; import javax.swing.filechooser.FileNameExtensionFilter;
@@ -314,7 +315,7 @@ public abstract class MidnightConfig {
                     })).size(40, 20).build();
                     resetButton.setPosition(width - 205, 0);
 
-                    if (info.function != null) {
+                    if (info.function != null || info.field.getType() == Map.class) {
                         ClickableWidget widget;
                         Entry e = info.field.getAnnotation(Entry.class);
 
@@ -328,6 +329,10 @@ public abstract class MidnightConfig {
                         } else if(info.field.getType() == List.class){
                             widget = new ButtonWidget.Builder(Text.translatable("item-despawn-timer.midnightconfig.openListEditor"), button -> {
                                 this.client.setScreen(new ListEditorScreen(this));
+                            }).dimensions(width - 160, 0, 150, 20).build();
+                        } else if(info.field.getType() == Map.class){
+                            widget = new ButtonWidget.Builder(Text.translatable("item-despawn-timer.midnightconfig.openMapEditor"), button -> {
+                                this.client.setScreen(new MapEditorScreen(this));
                             }).dimensions(width - 160, 0, 150, 20).build();
                         } else {
                             widget = new TextFieldWidget(textRenderer, width - 160, 0, 150, 20, Text.empty());
@@ -384,7 +389,7 @@ public abstract class MidnightConfig {
                             info.actionButton = explorerButton;
                         }
                         List<ClickableWidget> widgets;
-                        if(info.field.getType() == List.class){
+                        if(info.field.getType() == List.class || info.field.getType() == Map.class){
                             widgets = Lists.newArrayList(widget);
                         } else {
                             widgets = Lists.newArrayList(widget, resetButton);

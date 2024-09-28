@@ -1,6 +1,8 @@
 package whirlfrenzy.itemdespawntimer.mixin;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import whirlfrenzy.itemdespawntimer.PlatformSpecificHelper;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.entity.ItemEntity;
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import whirlfrenzy.itemdespawntimer.config.ItemDespawnTimerClientConfig;
 import whirlfrenzy.itemdespawntimer.networking.SetItemAgePacket;
 import whirlfrenzy.itemdespawntimer.networking.SetItemLifespanPacket;
 
@@ -67,6 +70,13 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
 
     @Override
     public int item_despawn_timer$getModItemLifespan(){
+        if(ItemDespawnTimerClientConfig.useTimeOverrides) {
+            Identifier itemId = Registries.ITEM.getId(this.getStack().getItem());
+            if (ItemDespawnTimerClientConfig.timeOverrides.containsKey(itemId)) {
+                return ItemDespawnTimerClientConfig.timeOverrides.get(itemId) * 20;
+            }
+        }
+
         return this.item_despawn_timer$modItemLifespan;
     }
 

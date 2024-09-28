@@ -28,7 +28,6 @@ public abstract class ItemEntityRendererMixin {
     public void renderTextLabels(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if(!((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getLabelVisibility()) return;
 
-        // TODO: test this out
         if(ItemDespawnTimerClientConfig.useWhitelist){
             Identifier itemId = Registries.ITEM.getId(itemEntity.getStack().getItem());
             if(ItemDespawnTimerClientConfig.whitelistIsBlacklist){
