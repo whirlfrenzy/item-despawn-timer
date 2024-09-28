@@ -1,14 +1,25 @@
 {
   "item-despawn-timer.midnightconfig.title": "Item Despawn Timer Config",
+
+  "item-despawn-timer.midnightconfig.labelSectionTitle": "Labels",
   "item-despawn-timer.midnightconfig.timerVisible": "Show timer label",
   "item-despawn-timer.midnightconfig.timerLabelHeight": "Timer label height",
   "item-despawn-timer.midnightconfig.nameVisible": "Show item name label",
   "item-despawn-timer.midnightconfig.nameLabelHeight": "Item name label height",
+
+  "item-despawn-timer.midnightconfig.whitelistSectionTitle": "Item whitelist",
+  "item-despawn-timer.midnightconfig.whitelistSectionNotice": "Allows you to specify which items will have the labels shown",
   "item-despawn-timer.midnightconfig.useWhitelist": "Use item whitelist",
   "item-despawn-timer.midnightconfig.whitelistIsBlacklist": "Use whitelist as blacklist",
   "item-despawn-timer.midnightconfig.whitelistedItems": "Whitelisted items",
+
+  "item-despawn-timer.midnightconfig.timeOverridesSectionTitle": "Time overrides",
+  "item-despawn-timer.midnightconfig.timeOverridesSectionNotice": "Allows you to specify from which time the labels will count down from for specific items",
+  "item-despawn-timer.midnightconfig.timeOverridesSectionNotice2": "This does not actually change how long the items will be there before despawning!",
+  "item-despawn-timer.midnightconfig.timeOverridesSectionNotice3": "These settings are intended to be used with mods that modify the length of an item's lifespan in ways unknown to this mod",
   "item-despawn-timer.midnightconfig.useTimeOverrides": "Use time overrides",
   "item-despawn-timer.midnightconfig.timeOverrides": "Time overrides",
+
   "item-despawn-timer.midnightconfig.openListEditor": "Open List Editor",
   "item-despawn-timer.midnightconfig.openMapEditor": "Open Map Editor",
 

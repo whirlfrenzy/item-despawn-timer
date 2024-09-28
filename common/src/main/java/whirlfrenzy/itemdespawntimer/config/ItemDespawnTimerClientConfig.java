@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemDespawnTimerClientConfig extends MidnightConfig {
+
+    @Comment(centered = true)
+    public static Comment labelSectionTitle;
+
     @Entry
     public static boolean timerVisible = true;
 
@@ -20,6 +24,11 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
     @Entry(min = -0.5, max = 5)
     public static float nameLabelHeight = 1.1f;
 
+    @Comment(centered = true)
+    public static Comment whitelistSectionTitle;
+    @Comment
+    public static Comment whitelistSectionNotice;
+
     @Entry
     public static boolean useWhitelist = false;
 
@@ -28,6 +37,15 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
 
     @Entry
     public static List<Identifier> whitelistedItems = new ArrayList<>();
+
+    @Comment(centered = true)
+    public static Comment timeOverridesSectionTitle;
+    @Comment
+    public static Comment timeOverridesSectionNotice;
+    @Comment
+    public static Comment timeOverridesSectionNotice2;
+    @Comment
+    public static Comment timeOverridesSectionNotice3;
 
     @Entry
     public static boolean useTimeOverrides = false;
