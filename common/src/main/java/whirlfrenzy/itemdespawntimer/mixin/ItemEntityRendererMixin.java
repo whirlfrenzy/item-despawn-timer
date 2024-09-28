@@ -68,10 +68,9 @@ public abstract class ItemEntityRendererMixin {
 
             float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(text) / 2;
 
-            textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
+            textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
             matrix4f.translate(0F,0F, 0.03F); // Fix z fighting between the background and text. While I could use the background color property in the method below and get rid of the one above, it also causes the z fighting which really sucks
             textRenderer.draw(text, negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
-
 
             // Timer icon
             float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
@@ -89,7 +88,6 @@ public abstract class ItemEntityRendererMixin {
             RenderSystem.setShaderTexture(0, ItemDespawnTimer.identifier("clock.png"));
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-            // Necessary for the icon to draw behind blocks. I thought this was enabled already, but it wasn't. Oh well, it only took a little while to find out lol
             RenderSystem.enableDepthTest();
 
             BufferRenderer.drawWithGlobalProgram(buffer.end());
@@ -109,7 +107,7 @@ public abstract class ItemEntityRendererMixin {
 
             float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(itemEntity.getStack().getName()) / 2;
 
-            textRenderer.draw(itemEntity.getStack().getName(), negativeHalfOfTextWidth, 0, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
+            textRenderer.draw(itemEntity.getStack().getName(), negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
             matrix4f.translate(0F,0F, 0.03F); // Fix z fighting issue like with the timer label
             textRenderer.draw(itemEntity.getStack().getName(), negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
             matrixStack.pop();
