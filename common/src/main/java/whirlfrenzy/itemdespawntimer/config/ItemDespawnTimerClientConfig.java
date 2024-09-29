@@ -46,6 +46,8 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
     public static Comment timeOverridesSectionNotice2;
     @Comment
     public static Comment timeOverridesSectionNotice3;
+    @Comment
+    public static Comment timeOverridesSectionNotice4;
 
     @Entry
     public static boolean useTimeOverrides = false;

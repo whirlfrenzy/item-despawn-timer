@@ -61,7 +61,7 @@ public abstract class ItemEntityRendererMixin {
             int modItemAge = ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getModItemAge();
 
             if(modItemAge != -32768){
-                text = Text.literal(Math.max(0, ((int)Math.ceil(((float) ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getModItemLifespan() - (float) modItemAge) / 20))) + "s");
+                text = Text.literal(Math.max(0, ((int)Math.ceil(((float) ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getOverriddenLifespanOrModItemLifespan() - (float) modItemAge) / 20))) + "s");
             } else {
                 text = Text.literal("∞");
             }

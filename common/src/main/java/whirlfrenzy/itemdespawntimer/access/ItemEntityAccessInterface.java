@@ -15,6 +15,8 @@ public interface ItemEntityAccessInterface {
 
     void item_despawn_timer$sendItemAgePacketToNearbyPlayers();
 
+    int item_despawn_timer$getOverriddenLifespanOrModItemLifespan();
+
     int item_despawn_timer$getModItemLifespan();
 
     void item_despawn_timer$setModItemLifespan(int itemLifespan);

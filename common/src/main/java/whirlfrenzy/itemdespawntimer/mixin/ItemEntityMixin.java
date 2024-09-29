@@ -69,7 +69,7 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
     }
 
     @Override
-    public int item_despawn_timer$getModItemLifespan(){
+    public int item_despawn_timer$getOverriddenLifespanOrModItemLifespan(){
         if(ItemDespawnTimerClientConfig.useTimeOverrides) {
             Identifier itemId = Registries.ITEM.getId(this.getStack().getItem());
             if (ItemDespawnTimerClientConfig.timeOverrides.containsKey(itemId)) {
@@ -77,6 +77,11 @@ public abstract class ItemEntityMixin extends EntityMixin implements ItemEntityA
             }
         }
 
+        return this.item_despawn_timer$modItemLifespan;
+    }
+
+    @Override
+    public int item_despawn_timer$getModItemLifespan(){
         return this.item_despawn_timer$modItemLifespan;
     }
 
