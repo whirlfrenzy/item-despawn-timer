@@ -12,9 +12,12 @@ public class ClientNetworking {
         queuedItemDataPackets = new ArrayList<>();
 
         for(ItemDataPacket packet : itemDataPackets){
-            if(!packet.attemptSet() && packet.getAttempts() < 5){
-                ItemDespawnTimer.LOGGER.warn("Failed set item data packet {} for entity id {}, adding back into queue", packet.getId().id().toString(), packet.getEntityId());
-                queuedItemDataPackets.add(packet.createNextAttempt());
+            if(!packet.attemptSet()){
+                if(packet.getAttempts() < 5) {
+                    queuedItemDataPackets.add(packet.createNextAttempt());
+                } else {
+                    ItemDespawnTimer.LOGGER.warn("Dropping item data packet {} for entity id {}, since it failed to apply after 5 attempts", packet.getId().id().toString(), packet.getEntityId());
+                }
             }
         }
     }

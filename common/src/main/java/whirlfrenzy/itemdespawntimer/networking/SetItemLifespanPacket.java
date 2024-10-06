@@ -38,7 +38,6 @@ public record SetItemLifespanPacket(int entityId, int itemLifespan, int attempts
         Entity itemEntity = world.getEntityById(this.entityId);
 
         if(itemEntity == null){
-            ItemDespawnTimer.LOGGER.warn("Failed to set item lifespan for entity {}, entity does not exist on the client", this.entityId);
             return false;
         } else if(itemEntity instanceof ItemEntity){
             ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$setModItemLifespan(this.itemLifespan);

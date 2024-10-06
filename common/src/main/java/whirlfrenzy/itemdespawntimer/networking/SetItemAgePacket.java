@@ -29,7 +29,6 @@ public record SetItemAgePacket(int entityId, int itemAge, int attempts) implemen
         Entity itemEntity = world.getEntityById(this.entityId);
 
         if(itemEntity == null){
-            ItemDespawnTimer.LOGGER.warn("Failed to set item age for entity {}, entity does not exist on the client", this.entityId);
             return false;
         } else if(itemEntity instanceof ItemEntity){
             ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$setModItemAge(this.itemAge);
