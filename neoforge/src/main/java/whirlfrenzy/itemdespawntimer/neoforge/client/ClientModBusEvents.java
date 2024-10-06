@@ -1,5 +1,6 @@
 package whirlfrenzy.itemdespawntimer.neoforge.client;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -10,7 +11,7 @@ import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.config.ItemDespawnTimerClientConfig;
 import whirlfrenzy.itemdespawntimer.keybinding.ItemDespawnTimerKeybinds;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = ItemDespawnTimer.NEOFORGE_MOD_ID)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = ItemDespawnTimer.NEOFORGE_MOD_ID, value = Dist.CLIENT)
 public class ClientModBusEvents {
     @SubscribeEvent
     public static void registerKeybinds(RegisterKeyMappingsEvent event){
