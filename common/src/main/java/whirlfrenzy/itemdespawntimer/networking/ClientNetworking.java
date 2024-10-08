@@ -16,7 +16,7 @@ public class ClientNetworking {
                 if(packet.getAttempts() < 5) {
                     queuedItemDataPackets.add(packet.createNextAttempt());
                 } else {
-                    ItemDespawnTimer.LOGGER.warn("Dropping item data packet {} for entity id {}, since it failed to apply after 5 attempts", packet.getId().id().toString(), packet.getEntityId());
+                    ItemDespawnTimer.LOGGER.warn("Dropping item data packet {} for entity id {}, since it failed to apply after 5 attempts", packet.getId().toString(), packet.getEntityId());
                 }
             }
         }

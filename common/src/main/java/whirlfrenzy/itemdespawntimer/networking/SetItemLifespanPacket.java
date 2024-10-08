@@ -4,31 +4,46 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 
 /*
-This is to support NeoForge's item lifespan extending functionality
-(NeoForge calls it item lifespan and thus this is called SetItemLifespanPacket just for clarity)
+This is to support Forge's item lifespan extending functionality
+(Forge calls it item lifespan and thus this is called SetItemLifespanPacket just for clarity)
 
 If mods set the item age to a lower number (even going down to the negatives)
 to extend an item's lifespan (like Custom Item Despawn Duration :insert self-promotion sticker gif thingy here:)
 then this is unnecessary
  */
-public record SetItemLifespanPacket(int entityId, int itemLifespan, int attempts) implements ItemDataPacket {
-    public static final Id<SetItemLifespanPacket> PACKET_ID = new Id<>(ItemDespawnTimer.identifier("set-item-lifespan"));
+public class SetItemLifespanPacket extends ItemDataPacket {
+    public static final Identifier PACKET_ID = ItemDespawnTimer.identifier("set-item-lifespan");
 
-    public static final PacketCodec<RegistryByteBuf, SetItemLifespanPacket> PACKET_CODEC = PacketCodec.of(((value, buf) -> {
-        buf.writeVarInt(value.entityId);
-        buf.writeVarInt(value.itemLifespan);
-    }), buf -> new SetItemLifespanPacket(buf.readVarInt(), buf.readVarInt(), 0));
+    private int entityId;
+    private int itemLifespan;
+    private int attempts;
+
+    public SetItemLifespanPacket(int entityId, int itemLifespan, int attempts){
+        this.entityId = entityId;
+        this.itemLifespan = itemLifespan;
+        this.attempts = attempts;
+    }
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Identifier getId() {
         return PACKET_ID;
+    }
+
+    public static SetItemLifespanPacket fromPacketByteBuffer(PacketByteBuf packetByteBuf){
+        return new SetItemLifespanPacket(packetByteBuf.readVarInt(), packetByteBuf.readVarInt(), 0);
+    }
+
+    public PacketByteBuf writeToBuffer(PacketByteBuf buffer){
+        buffer.writeVarInt(this.entityId);
+        buffer.writeVarInt(this.itemLifespan);
+
+        return buffer;
     }
 
     public boolean attemptSet(){

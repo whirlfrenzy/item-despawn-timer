@@ -112,7 +112,12 @@ public class MapEditorScreen extends Screen {
 
                 int seconds = Integer.parseInt(this.valueTextField.getText());
 
-                ((LinkedHashMap<Identifier, Integer>)ItemDespawnTimerClientConfig.timeOverrides).putFirst(id, seconds);
+                // Curse you again Java 17 for not having LinkedHashMap.putFirst()
+                LinkedHashMap<Identifier, Integer> oldMap = new LinkedHashMap<>(ItemDespawnTimerClientConfig.timeOverrides);
+                ItemDespawnTimerClientConfig.timeOverrides.clear();
+                ItemDespawnTimerClientConfig.timeOverrides.put(id, seconds);
+                ItemDespawnTimerClientConfig.timeOverrides.putAll(oldMap);
+
                 this.list.addToTop(Map.entry(id, seconds));
 
                 this.keyTextField.setText("");
@@ -153,7 +158,7 @@ public class MapEditorScreen extends Screen {
 
     public static class HashMapList extends ElementListWidget<ListEntry> {
         public HashMapList(MinecraftClient minecraftClient, int width, int height, int y, int itemHeight) {
-            super(minecraftClient, width, height, y, itemHeight);
+            super(minecraftClient, width, height, y, y + width, itemHeight);
         }
 
         public void add(Map.Entry<Identifier, Integer> entry){

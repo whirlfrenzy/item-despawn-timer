@@ -1,13 +1,19 @@
 package whirlfrenzy.itemdespawntimer.networking;
 
-import net.minecraft.network.packet.CustomPayload;
 
-public interface ItemDataPacket extends CustomPayload {
-    boolean attemptSet();
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 
-    ItemDataPacket createNextAttempt();
+public abstract class ItemDataPacket {
+    abstract boolean attemptSet();
 
-    int getAttempts();
+    abstract ItemDataPacket createNextAttempt();
 
-    int getEntityId();
+    abstract int getAttempts();
+
+    abstract int getEntityId();
+
+    public abstract Identifier getId();
+
+    public abstract PacketByteBuf writeToBuffer(PacketByteBuf buffer);
 }

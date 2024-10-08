@@ -1,27 +1,44 @@
 package whirlfrenzy.itemdespawntimer.networking;
 
-import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
 
-public record SetItemAgePacket(int entityId, int itemAge, int attempts) implements ItemDataPacket {
-    public static final Id<SetItemAgePacket> PACKET_ID = new Id<>(ItemDespawnTimer.identifier("set-item-age"));
-    public static final PacketCodec<RegistryByteBuf, SetItemAgePacket> PACKET_CODEC = PacketCodec.of(((value, buf) -> {
-        buf.writeVarInt(value.entityId);
-        buf.writeVarInt(value.itemAge);
-    }), buf -> new SetItemAgePacket(buf.readVarInt(), buf.readVarInt(), 0));
+public class SetItemAgePacket extends ItemDataPacket {
+    public static final Identifier PACKET_ID = ItemDespawnTimer.identifier("set-item-age");
+
+    private int entityId;
+    private int itemAge;
+    private int attempts;
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Identifier getId() {
         return PACKET_ID;
     }
 
+    public SetItemAgePacket(int entityId, int itemAge, int attempts){
+        this.entityId = entityId;
+        this.itemAge = itemAge;
+        this.attempts = attempts;
+    }
+
+    public static SetItemAgePacket fromPacketByteBuffer(PacketByteBuf packetByteBuf){
+        return new SetItemAgePacket(packetByteBuf.readVarInt(), packetByteBuf.readVarInt(), 0);
+    }
+
+    public PacketByteBuf writeToBuffer(PacketByteBuf buffer){
+        buffer.writeVarInt(this.entityId);
+        buffer.writeVarInt(this.itemAge);
+
+        return buffer;
+    }
+
+    @Override
     public boolean attemptSet(){
         ClientWorld world = MinecraftClient.getInstance().world;
         if(world == null) return false;

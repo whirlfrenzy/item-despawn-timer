@@ -13,6 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListEditorScreen extends Screen {
@@ -72,7 +73,12 @@ public class ListEditorScreen extends Screen {
                 return;
             }
 
-            ItemDespawnTimerClientConfig.whitelistedItems.addFirst(id);
+            // Curse you Java 17 for also not having List.addFirst()!!!!
+            ArrayList<Identifier> oldList = new ArrayList<>(ItemDespawnTimerClientConfig.whitelistedItems);
+            ItemDespawnTimerClientConfig.whitelistedItems.clear();
+            ItemDespawnTimerClientConfig.whitelistedItems.add(id);
+            ItemDespawnTimerClientConfig.whitelistedItems.addAll(oldList);
+
             this.list.addToTop(id);
             this.itemIDField.setText("");
         }).dimensions(this.width / 2 + 75, 35, 20, 20).tooltip(Tooltip.of(Text.translatable("item-despawn-timer.midnightconfig.add"))).build();
@@ -95,7 +101,7 @@ public class ListEditorScreen extends Screen {
 
     public static class ItemList extends ElementListWidget<ListEntry> {
         public ItemList(MinecraftClient minecraftClient, int width, int height, int y, int itemHeight) {
-            super(minecraftClient, width, height, y, itemHeight);
+            super(minecraftClient, width, height, y, y + width, itemHeight);
         }
 
         public void add(Identifier identifier){
@@ -104,6 +110,10 @@ public class ListEditorScreen extends Screen {
 
         public void addToTop(Identifier identifier){
             this.addEntryToTop(new ListEntry(identifier, this));
+        }
+
+        public int getWidth(){
+            return this.width;
         }
 
         @Override
