@@ -4,7 +4,7 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    neoForge()
+    forge()
 }
 
 configurations {
@@ -26,22 +26,21 @@ configurations {
 
 repositories {
     maven {
-        name = 'NeoForged'
-        url = 'https://maven.neoforged.net/releases'
+        url = '"https://files.minecraftforge.net/maven/'
     }
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+    forge "net.minecraftforge:forge:$rootProject.forge_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 }
 
 processResources {
     inputs.property 'version', project.version
 
-    filesMatching('META-INF/neoforge.mods.toml') {
+    filesMatching('META-INF/mods.toml') {
         expand version: project.version
     }
 }
