@@ -12,23 +12,26 @@ description = '''
 Informs you about the remainder of an item's lifespan
 '''
 #logoFile = ""
+displayTest="NONE"
 
 [[dependencies.item_despawn_timer]]
-modId = "neoforge"
+modId = "forge"
 type = "required"
-versionRange = "[21.0.143,)"
+versionRange = "[47.3.0,)"
 ordering = "NONE"
 side = "CLIENT"
+mandatory = true
 
 [[dependencies.item_despawn_timer]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.20,1.20.1]"
 ordering = "NONE"
 side = "BOTH"
+mandatory = true
 
 [[mixins]]
 config = "item-despawn-timer.mixins.json"
 
 [[mixins]]
-config = "item-despawn-timer.neoforge.mixins.json"
+config = "item-despawn-timer.forge.mixins.json"

@@ -8,7 +8,7 @@ import whirlfrenzy.itemdespawntimer.keybinding.ItemDespawnTimerKeybinds;
 
 public final class ItemDespawnTimer {
     public static final String MOD_ID = "item-despawn-timer";
-    public static final String NEOFORGE_MOD_ID = "item_despawn_timer"; // NeoForge forbids hyphens in mod ids and I prefer using hyphens than underscores when possible
+    public static final String FORGE_MOD_ID = "item_despawn_timer"; // Forge forbids hyphens in mod ids and I prefer using hyphens than underscores when possible
     public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static Identifier identifier(String path){

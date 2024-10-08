@@ -1,20 +1,22 @@
-package whirlfrenzy.itemdespawntimer.neoforge.client;
+package whirlfrenzy.itemdespawntimer.forge.client;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.config.ItemDespawnTimerClientConfig;
 import whirlfrenzy.itemdespawntimer.keybinding.ItemDespawnTimerKeybinds;
 import whirlfrenzy.itemdespawntimer.networking.ClientNetworking;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = ItemDespawnTimer.NEOFORGE_MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = ItemDespawnTimer.FORGE_MOD_ID)
 public class ClientEventBusEvents {
     @SubscribeEvent
-    public static void onWorldTick(LevelTickEvent.Post event){
-        ClientNetworking.performQueuedSetInstances();
+    public static void onWorldTick(TickEvent.LevelTickEvent event){
+        if(event.phase == TickEvent.Phase.END) {
+            ClientNetworking.performQueuedSetInstances();
+        }
     }
 
     @SubscribeEvent

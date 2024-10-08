@@ -7,6 +7,14 @@ architectury {
     forge()
 }
 
+loom {
+    forge {
+        mixinConfig "item-despawn-timer.mixins.json"
+        mixinConfig "item-despawn-timer.forge.mixins.json"
+    }
+}
+
+
 configurations {
     common {
         canBeResolved = true
