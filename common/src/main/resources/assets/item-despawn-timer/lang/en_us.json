@@ -6,6 +6,10 @@
   "item-despawn-timer.midnightconfig.timerLabelHeight": "Timer label height",
   "item-despawn-timer.midnightconfig.nameVisible": "Show item name label",
   "item-despawn-timer.midnightconfig.nameLabelHeight": "Item name label height",
+  "item-despawn-timer.midnightconfig.applyFormattingToNameLabel": "Apply text formatting to name label",
+  "item-despawn-timer.midnightconfig.timerLabelVisibilityThresholdNotice": "Allows you to specify how many seconds or less must be remaining for the timer label to be shown",
+  "item-despawn-timer.midnightconfig.useTimerLabelVisibilityThreshold": "Use timer label visibility threshold",
+  "item-despawn-timer.midnightconfig.timerLabelVisibilityThreshold": "Timer label visibility threshold",
 
   "item-despawn-timer.midnightconfig.whitelistSectionTitle": "Item whitelist",
   "item-despawn-timer.midnightconfig.whitelistSectionNotice": "Allows you to specify which items will have the labels shown",

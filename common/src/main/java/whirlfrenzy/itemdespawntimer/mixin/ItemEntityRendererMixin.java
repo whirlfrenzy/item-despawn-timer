@@ -1,10 +1,14 @@
 package whirlfrenzy.itemdespawntimer.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.MutableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import org.spongepowered.asm.mixin.Unique;
 import whirlfrenzy.itemdespawntimer.ItemDespawnTimer;
 import whirlfrenzy.itemdespawntimer.access.ItemEntityAccessInterface;
 import net.minecraft.client.MinecraftClient;
@@ -25,7 +29,7 @@ import whirlfrenzy.itemdespawntimer.config.ItemDespawnTimerClientConfig;
 @Mixin(ItemEntityRenderer.class)
 public abstract class ItemEntityRendererMixin {
     @Inject(at = @At(value = "TAIL"), method = "render(Lnet/minecraft/entity/ItemEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
-    public void renderTextLabels(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    public void renderTextLabels(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int lightLevel, CallbackInfo ci) {
         if(!((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getLabelVisibility()) return;
 
         if(ItemDespawnTimerClientConfig.useWhitelist){
@@ -46,71 +50,98 @@ public abstract class ItemEntityRendererMixin {
         TextRenderer textRenderer = ((EntityRendererAccessor)this).getTextRenderer();
         int textBackgroundOpacity = (int)(MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255.0f) << 24;
 
-        if(ItemDespawnTimerClientConfig.timerVisible){
-            // The remaining seconds label
-            matrixStack.push();
-            matrixStack.translate(labelPosition.getX(), labelPosition.getY() + ItemDespawnTimerClientConfig.timerLabelHeight, labelPosition.getZ());
-            matrixStack.multiply(((EntityRendererAccessor)this).getDispatcher().getRotation());
-            matrixStack.scale(0.025f,-0.025f, 0.025f);
 
-            Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-            matrix4f.translate(4.0F, 0F, 0F);
+        if(ItemDespawnTimerClientConfig.timerVisible){
+            int modItemAge = ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getModItemAge();
+            int remainingSeconds = Math.max(0, ((int)Math.ceil(((float) ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getOverriddenLifespanOrModItemLifespan() - (float) modItemAge) / 20)));
 
             Text text;
 
-            int modItemAge = ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getModItemAge();
-
             if(modItemAge != -32768){
-                text = Text.literal(Math.max(0, ((int)Math.ceil(((float) ((ItemEntityAccessInterface)itemEntity).item_despawn_timer$getOverriddenLifespanOrModItemLifespan() - (float) modItemAge) / 20))) + "s");
+                text = Text.literal(remainingSeconds + "s");
             } else {
                 text = Text.literal("∞");
             }
 
-            float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(text) / 2;
-
-            textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
-            matrix4f.translate(0F,0F, 0.03F); // Fix z fighting between the background and text. While I could use the background color property in the method below and get rid of the one above, it also causes the z fighting which really sucks
-            textRenderer.draw(text, negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
-
-            // Timer icon
-            float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
-            matrix4f.translate(new Vector3f(timerIconOffset, 0.0F, 0.0F));
-
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-
-            buffer.vertex(matrix4f, 0,0,0).color(1.0F,1.0F,1.0F,1.0F).texture(0.0F, 0.0F);
-            buffer.vertex(matrix4f, 0,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(0.0F, 1.0F);
-            buffer.vertex(matrix4f, 7,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(1.0F, 1.0F);
-            buffer.vertex(matrix4f, 7,0,0).color(1.0F,1.0F,0F,1.0F).texture(1.0F, 0.0F);
-
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            RenderSystem.setShaderTexture(0, ItemDespawnTimer.identifier("clock.png"));
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-            RenderSystem.enableDepthTest();
-
-            BufferRenderer.drawWithGlobalProgram(buffer.end());
-            tessellator.clear();
-            matrixStack.pop();
+            if(ItemDespawnTimerClientConfig.useTimerLabelVisibilityThreshold){
+                if(remainingSeconds <= ItemDespawnTimerClientConfig.timerLabelVisibilityThreshold){
+                    item_despawn_timer$renderTimerLabel(text, matrixStack, labelPosition.add(0, ItemDespawnTimerClientConfig.timerLabelHeight, 0), textBackgroundOpacity, lightLevel, textRenderer, vertexConsumerProvider);
+                }
+            } else {
+                item_despawn_timer$renderTimerLabel(text, matrixStack, labelPosition.add(0, ItemDespawnTimerClientConfig.timerLabelHeight, 0), textBackgroundOpacity, lightLevel, textRenderer, vertexConsumerProvider);
+            }
         }
 
         if(ItemDespawnTimerClientConfig.nameVisible){
-            // The name label, which is just the item stack's name
-            matrixStack.push();
-            matrixStack.translate(labelPosition.getX(), labelPosition.getY() + ItemDespawnTimerClientConfig.nameLabelHeight, labelPosition.getZ());
-            matrixStack.multiply(((EntityRendererAccessor)this).getDispatcher().getRotation());
-            matrixStack.scale(0.025f,-0.025f, 0.025f);
+            MutableText name = itemEntity.getStack().getName().copy();
 
-            Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-            matrix4f.translate(0.0F, 0F, 0F);
+            if(ItemDespawnTimerClientConfig.applyFormattingToNameLabel) {
+                name.formatted(itemEntity.getStack().getRarity().getFormatting());
+                if (itemEntity.getStack().contains(DataComponentTypes.CUSTOM_NAME)) {
+                    name.formatted(Formatting.ITALIC);
+                }
+            }
 
-            float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(itemEntity.getStack().getName()) / 2;
-
-            textRenderer.draw(itemEntity.getStack().getName(), negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, i);
-            matrix4f.translate(0F,0F, 0.03F); // Fix z fighting issue like with the timer label
-            textRenderer.draw(itemEntity.getStack().getName(), negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
-            matrixStack.pop();
+            item_despawn_timer$renderNameLabel(name, matrixStack, labelPosition.add(0, ItemDespawnTimerClientConfig.nameLabelHeight, 0), textBackgroundOpacity, lightLevel, textRenderer, vertexConsumerProvider);
         }
+    }
+
+    @Unique
+    public void item_despawn_timer$renderTimerLabel(Text text, MatrixStack matrixStack, Vec3d labelPosition, int textBackgroundOpacity, int lightLevel, TextRenderer textRenderer, VertexConsumerProvider vertexConsumerProvider){
+        // The remaining seconds label
+        matrixStack.push();
+        matrixStack.translate(labelPosition.getX(), labelPosition.getY(), labelPosition.getZ());
+        matrixStack.multiply(((EntityRendererAccessor)this).getDispatcher().getRotation());
+        matrixStack.scale(0.025f,-0.025f, 0.025f);
+
+        Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
+        matrix4f.translate(4.0F, 0F, 0F);
+
+        float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(text) / 2;
+
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, lightLevel);
+        matrix4f.translate(0F,0F, 0.03F); // Fix z fighting between the background and text. While I could use the background color property in the method below and get rid of the one above, it also causes the z fighting which really sucks
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, lightLevel);
+
+        // Timer icon
+        float timerIconOffset = (float) -textRenderer.getWidth(text) / 2 - 10;
+        matrix4f.translate(new Vector3f(timerIconOffset, 0.0F, 0.0F));
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+
+        buffer.vertex(matrix4f, 0,0,0).color(1.0F,1.0F,1.0F,1.0F).texture(0.0F, 0.0F);
+        buffer.vertex(matrix4f, 0,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(0.0F, 1.0F);
+        buffer.vertex(matrix4f, 7,7,0).color(1.0F,1.0F,1.0F,1.0F).texture(1.0F, 1.0F);
+        buffer.vertex(matrix4f, 7,0,0).color(1.0F,1.0F,0F,1.0F).texture(1.0F, 0.0F);
+
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShaderTexture(0, ItemDespawnTimer.identifier("clock.png"));
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        RenderSystem.enableDepthTest();
+
+        BufferRenderer.drawWithGlobalProgram(buffer.end());
+        tessellator.clear();
+        matrixStack.pop();
+    }
+
+    @Unique
+    public void item_despawn_timer$renderNameLabel(Text text, MatrixStack matrixStack, Vec3d labelPosition, int textBackgroundOpacity, int lightLevel, TextRenderer textRenderer, VertexConsumerProvider vertexConsumerProvider){
+        // The name label, which is just the item stack's name
+        matrixStack.push();
+        matrixStack.translate(labelPosition.getX(), labelPosition.getY(), labelPosition.getZ());
+        matrixStack.multiply(((EntityRendererAccessor)this).getDispatcher().getRotation());
+        matrixStack.scale(0.025f,-0.025f, 0.025f);
+
+        Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
+        matrix4f.translate(0.0F, 0F, 0F);
+
+        float negativeHalfOfTextWidth = (float) -textRenderer.getWidth(text) / 2;
+
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0, 0x0FFFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, textBackgroundOpacity, lightLevel);
+        matrix4f.translate(0F,0F, 0.03F); // Fix z fighting issue like with the timer label
+        textRenderer.draw(text, negativeHalfOfTextWidth, 0.5F, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, lightLevel);
+        matrixStack.pop();
     }
 }

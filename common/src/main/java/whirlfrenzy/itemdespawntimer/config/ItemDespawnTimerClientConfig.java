@@ -24,6 +24,18 @@ public class ItemDespawnTimerClientConfig extends MidnightConfig {
     @Entry(min = -0.5, max = 5)
     public static float nameLabelHeight = 1.1f;
 
+    @Entry
+    public static boolean applyFormattingToNameLabel = true;
+
+    @Comment
+    public static Comment timerLabelVisibilityThresholdNotice;
+
+    @Entry
+    public static boolean useTimerLabelVisibilityThreshold = false;
+
+    @Entry(min = 0)
+    public static int timerLabelVisibilityThreshold = 300;
+
     @Comment(centered = true)
     public static Comment whitelistSectionTitle;
     @Comment
