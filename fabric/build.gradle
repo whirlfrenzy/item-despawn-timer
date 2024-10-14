@@ -34,6 +34,9 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     modImplementation "maven.modrinth:modmenu:11.0.2"
+
+    modLocalRuntime "curse.maven:creativecore-257814:5744205"
+    modLocalRuntime "curse.maven:itemphysic-258587:5709381"
 }
 
 processResources {
